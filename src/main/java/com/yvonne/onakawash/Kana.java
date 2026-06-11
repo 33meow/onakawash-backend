@@ -1,3 +1,4 @@
+//legacy test class
 package com.yvonne.onakawash;
 
 public class Kana {
@@ -5,12 +6,12 @@ public class Kana {
     public String id;
     public String kana;
     public String romaji;
-    public String audio;
+    public String audioSrc;
 
-    public Kana(String id,String kana , String romaji,String audio){
+    public Kana(String id,String kana , String romaji,String audioSrc){
         this.id=id;
         this.kana = kana;
         this.romaji = romaji;
-        this.audio=audio;
+        this.audioSrc=audioSrc;
     }
 }

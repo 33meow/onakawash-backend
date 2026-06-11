@@ -34,6 +34,7 @@ public class HelloController {
 
         return new Kana("a","あ","a","/audio/a.mp3");
     }
+    //kana API
     @GetMapping("/kana-list")
     public List<Kana> getKanaList(){
         List<Kana> kanaList = new ArrayList<>();
@@ -44,5 +45,36 @@ public class HelloController {
 
          return kanaList;
     }
+
+    //hiragana API
+
+    //当前端访问 /hiragana 时
+    //后端创建一些 KanaItem
+    //把它们装进 KanaSection
+    //最后 return 给前端
+    @GetMapping("/hiragana")
+    public List<KanaSection>getHiragana(){
+        // 1. 创建一个空列表，准备装 KanaItem
+        List<KanaItem>basicItems = new ArrayList<>();
+        // 2. 往列表里加一个个假名
+        basicItems.add(new KanaItem("a","あ","a","/audio/a.mp3",null));
+        basicItems.add(new KanaItem("i","い","i","/audio/i.mp3",null));
+        basicItems.add(new KanaItem("u","う","u","/audio/u.mp3",null));
+        basicItems.add(new KanaItem("e","え","e","/audio/e.mp3",null));
+        basicItems.add(new KanaItem("o","お","o","/audio/o.mp3",null));
+        // 3. 创建一个 section，把 basicItems 放进去
+        KanaSection basicSection = new KanaSection (
+                "Basic Hiragana",
+                "Basic hiragana sounds",
+                basicItems
+        );
+        // 4. 创建 section 列表
+        List<KanaSection> sections = new ArrayList<>();
+        // 5. 把 basicSection 放进 sections
+         sections.add(basicSection);
+        // 6. 返回 sections，Spring Boot 自动变 JSON
+         return sections;
+
+      }
 }
 
