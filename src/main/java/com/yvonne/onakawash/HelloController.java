@@ -32,14 +32,15 @@ public class HelloController {
     @GetMapping("/kana")
     public Kana getKna(){
 
-        return new Kana("あ","a");
+        return new Kana("a","あ","a","/audio/a.mp3");
     }
     @GetMapping("/kana-list")
     public List<Kana> getKanaList(){
         List<Kana> kanaList = new ArrayList<>();
-         kanaList.add(new Kana("あ","a"));
-         kanaList.add(new Kana("い","i"));
-         kanaList.add(new Kana("う","u"));
+        //浏览器需要的是网站路径，也就是从 public 后面开始写。
+        kanaList.add(new Kana("a", "あ", "a", "/audio/a.mp3"));
+        kanaList.add(new Kana("i", "い", "i", "/audio/i.mp3"));
+        kanaList.add(new Kana("u", "う", "u", "/audio/u.mp3"));
 
          return kanaList;
     }
