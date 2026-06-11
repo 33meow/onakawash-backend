@@ -78,7 +78,9 @@ public class KanaService {
         items.add(new KanaItem("mo", "も", "mo", "/audio/mo.mp3", null));
 
         items.add(new KanaItem("ya", "や", "ya", "/audio/ya.mp3", null));
+        items.add(null);
         items.add(new KanaItem("yu", "ゆ", "yu", "/audio/yu.mp3", null));
+        items.add(null);
         items.add(new KanaItem("yo", "よ", "yo", "/audio/yo.mp3", null));
 
         items.add(new KanaItem("ra", "ら", "ra", "/audio/ra.mp3", null));
@@ -88,8 +90,16 @@ public class KanaService {
         items.add(new KanaItem("ro", "ろ", "ro", "/audio/ro.mp3", null));
 
         items.add(new KanaItem("wa", "わ", "wa", "/audio/wa.mp3", null));
+        items.add(null);
+        items.add(null);
+        items.add(null);
         items.add(new KanaItem("wo", "を", "wo", "/audio/wo.mp3", null));
+
+        items.add(null);
+        items.add(null);
         items.add(new KanaItem("n", "ん", "n", "/audio/n.mp3", null));
+        items.add(null);
+        items.add(null);
         return items;
     }
     private List<KanaItem> getHiraganaDakutenItems() {
@@ -245,7 +255,9 @@ return sections;
         items.add(new KanaItem("mo", "モ", "mo", "/audio/mo.mp3", null));
 
         items.add(new KanaItem("ya", "ヤ", "ya", "/audio/ya.mp3", null));
+        items.add(null);
         items.add(new KanaItem("yu", "ユ", "yu", "/audio/yu.mp3", null));
+        items.add(null);
         items.add(new KanaItem("yo", "ヨ", "yo", "/audio/yo.mp3", null));
 
         items.add(new KanaItem("ra", "ラ", "ra", "/audio/ra.mp3", null));
@@ -255,8 +267,16 @@ return sections;
         items.add(new KanaItem("ro", "ロ", "ro", "/audio/ro.mp3", null));
 
         items.add(new KanaItem("wa", "ワ", "wa", "/audio/wa.mp3", null));
+        items.add(null);
+        items.add(null);
+        items.add(null);
         items.add(new KanaItem("wo", "ヲ", "wo", "/audio/wo.mp3", null));
+
+        items.add(null);
+        items.add(null);
         items.add(new KanaItem("n", "ン", "n", "/audio/n.mp3", null));
+        items.add(null);
+        items.add(null);
 
          return items;
        }
