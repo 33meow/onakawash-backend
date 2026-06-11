@@ -1,4 +1,4 @@
-package com.yvonne.onakawash;
+package com.yvonne.onakawash.model;
 
 import java.util.List;
 

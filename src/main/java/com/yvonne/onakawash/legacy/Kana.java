@@ -1,5 +1,5 @@
 //legacy test class
-package com.yvonne.onakawash;
+package com.yvonne.onakawash.legacy;
 
 public class Kana {
    //一个 Kana 对象有 4 个字段。

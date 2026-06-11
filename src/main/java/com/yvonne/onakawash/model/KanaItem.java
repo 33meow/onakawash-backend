@@ -1,4 +1,4 @@
-package com.yvonne.onakawash;
+package com.yvonne.onakawash.model;
 
 public class KanaItem {
     public String id;
