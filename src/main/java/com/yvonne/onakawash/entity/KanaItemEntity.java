@@ -12,6 +12,9 @@ import jakarta.persistence.Table;
 
 public class KanaItemEntity {
     //id means this field is the primary key
+    //The primary key is the field marked with @id
+    //A primary key is like an ID card number for each database row.
+    //This field is the unique identifier of each row.
     @Id
     private String id;
     private String kana;
