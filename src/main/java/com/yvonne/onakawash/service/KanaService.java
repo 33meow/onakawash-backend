@@ -5,12 +5,26 @@ import com.yvonne.onakawash.model.KanaItem;
 import com.yvonne.onakawash.model.KanaSection;
 import org.springframework.stereotype.Service;
 
+import com.yvonne.onakawash.entity.KanaItemEntity;
+import com.yvonne.onakawash.repository.KanaItemRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 // @Service的意思 Spring Boot，请你管理这个类。
 //以后 Controller 需要 KanaService 的时候，你自动帮它准备好。
 @Service
 public class KanaService {
+
+    // Repository 是专门和数据库说话的对象。
+    // Service 通过它从 H2 的 kana_items 表里读取数据。
+    private final KanaItemRepository kanaItemRepository;
+
+    // Constructor injection 构造器注入。
+    // Spring Boot 会自动把 KanaItemRepository 塞进来。
+    public KanaService(KanaItemRepository kanaItemRepository) {
+        this.kanaItemRepository = kanaItemRepository;
+    }
+
     // 这个方法专门负责准备 Hiragana 数据
     public List<KanaSection> getHiraganaSections() {
         List<KanaSection> sections = new ArrayList<>();
@@ -362,6 +376,44 @@ private List<KanaItem>getKatakanaCombinationItems(){
     items.add(new KanaItem("pyo", "ピョ", "pyo", "/audio/pyo.mp3", null));
     return items;
 }
+    // 把数据库的一行 Entity 转成前端需要的 KanaItem。
+// Entity = database row.
+// KanaItem = frontend item.
+    private KanaItem convertEntityToKanaItem(KanaItemEntity entity) {
+        return new KanaItem(
+                entity.getId(),
+                entity.getKana(),
+                entity.getRomaji(),
+                entity.getAudioSrc(),
+                entity.getImageSrc()
+        );
+    }
+    // 这个方法返回前端需要的 Section 格式。
+// 数据来源已经变成 H2 数据库。
+    public List<KanaSection> getHiraganaSectionsFromDatabase() {
+        List<KanaItemEntity> entities =
+                kanaItemRepository.findByTypeOrderBySectionOrderAscDisplayOrderAsc("HIRAGANA");
+
+        List<KanaItem> basicItems = new ArrayList<>();
+
+        //从 entities 里面，一个一个拿出 KanaItemEntity，每次临时叫它 entity
+        for (KanaItemEntity entity : entities) {
+            if ("BASIC".equals(entity.getSection())) {
+                basicItems.add(convertEntityToKanaItem(entity));
+            }
+        }
+//又准备一个更大的空篮子。
+//这个大篮子装 KanaSection。
+        List<KanaSection> sections = new ArrayList<>();
+
+        sections.add(new KanaSection(
+                "Basic Hiragana",
+                "Basic hiragana sounds",
+                basicItems
+        ));
+
+        return sections;
+    }
 
 
 }

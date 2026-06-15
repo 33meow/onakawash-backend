@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
+import com.yvonne.onakawash.entity.KanaItemEntity;
 //CORS /kɔːrz/ 的感觉就是：
 // 浏览器保安看到前端是 localhost:3000，
 // 后端是 localhost:8080，
@@ -43,6 +44,13 @@ public class KanaController {
          return kanaList;
     }
 
+
+
+    @GetMapping("/hiragana/db")
+    public List<KanaSection> getHiraganaSectionsFromDatabase() {
+        return kanaService.getHiraganaSectionsFromDatabase();
+    }
+
     //hiragana API
 
     //当前端访问 /hiragana 时
@@ -58,5 +66,6 @@ public class KanaController {
     public List<KanaSection>getKatakana(){
         return kanaService.getKatakanaSections();
       }
+
 }
 
