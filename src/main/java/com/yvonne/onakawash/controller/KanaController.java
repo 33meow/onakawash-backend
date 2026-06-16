@@ -59,7 +59,7 @@ public class KanaController {
     //最后 return 给前端
     @GetMapping("/hiragana")
     public List<KanaSection>getHiragana(){
-        return kanaService.getHiraganaSections();
+        return kanaService.getHiraganaSectionsFromDatabase();
 
       }
       @GetMapping("/katakana")

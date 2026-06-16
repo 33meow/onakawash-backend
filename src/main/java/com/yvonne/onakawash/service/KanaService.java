@@ -387,6 +387,38 @@ private List<KanaItem>getKatakanaCombinationItems(){
                 entity.getAudioSrc(),
                 entity.getImageSrc()
         );
+
+
+    }
+    private List<KanaItem> convertEntitiesToFixedSlots(
+           //这个方法需要别人传进来一个 KanaItemEntity 列表，这个列表在方法里面叫 entities
+            List<KanaItemEntity> entities,
+            int totalSlots
+    ){
+        List<KanaItem> items = new ArrayList<>();
+
+        for (int i=0;i<totalSlots;i++){
+            //制造空位。现在数据库不存空位，所以 Service 要自己重新补空位。
+            items.add(null);
+        }
+        //从 entities 这个列表里，一个一个拿出 KanaItemEntity，每次拿出来的这个东西，暂时叫 entity
+
+        //entities = 一整筐数据库行
+        //entity = 当前从筐里拿出来的这一行
+        //displayOrder = 当前这一行里的位置编号
+        for(KanaItemEntity entity: entities){
+            //integer可以是null但是int不可
+            //displayOrder 是你在这一行新定义的变量。
+            Integer displayOrder = entity.getDisplayOrder();
+            //做安全检查。
+            if (displayOrder !=null&&displayOrder>=1&&displayOrder<=totalSlots){
+                //Java 的 List 位置是从 0 开始
+                int index = displayOrder -1;
+                //把这个位置上的 null 替换成真正的 KanaItem。
+                items.set(index,convertEntityToKanaItem(entity));
+            }
+        }
+        return items;
     }
     // 这个方法返回前端需要的 Section 格式。
 // 数据来源已经变成 H2 数据库。
@@ -394,14 +426,15 @@ private List<KanaItem>getKatakanaCombinationItems(){
         List<KanaItemEntity> entities =
                 kanaItemRepository.findByTypeOrderBySectionOrderAscDisplayOrderAsc("HIRAGANA");
 
-        List<KanaItem> basicItems = new ArrayList<>();
+        List<KanaItemEntity> basicEntities = new ArrayList<>();
 
-        //从 entities 里面，一个一个拿出 KanaItemEntity，每次临时叫它 entity
         for (KanaItemEntity entity : entities) {
             if ("BASIC".equals(entity.getSection())) {
-                basicItems.add(convertEntityToKanaItem(entity));
+                basicEntities.add(entity);
             }
         }
+
+        List<KanaItem> basicItems = convertEntitiesToFixedSlots(basicEntities, 55);
 //又准备一个更大的空篮子。
 //这个大篮子装 KanaSection。
         List<KanaSection> sections = new ArrayList<>();
