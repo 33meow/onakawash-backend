@@ -56,3 +56,37 @@ VALUES
     ('hiragana-wa', 'わ', 'wa', '/audio/wa.mp3', NULL, 'HIRAGANA', 'BASIC', 1, 46),
     ('hiragana-wo', 'を', 'wo', '/audio/wo.mp3', NULL, 'HIRAGANA', 'BASIC', 1, 50),
     ('hiragana-n', 'ん', 'n', '/audio/n.mp3', NULL, 'HIRAGANA', 'BASIC', 1, 51);
+
+-- Hiragana Dakuten / Han-dakuten
+INSERT INTO kana_items
+(id,kana,romaji,audio_src,image_src,type,section,section_order,display_order)
+VALUES
+    ('hiragana-ga', 'が', 'ga', '/audio/ga.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 52),
+    ('hiragana-gi', 'ぎ', 'gi', '/audio/gi.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 53),
+    ('hiragana-gu', 'ぐ', 'gu', '/audio/gu.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 54),
+    ('hiragana-ge', 'げ', 'ge', '/audio/ge.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 55),
+    ('hiragana-go', 'ご', 'go', '/audio/go.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 56),
+
+    ('hiragana-za', 'ざ', 'za', '/audio/za.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 57),
+    ('hiragana-zi', 'じ', 'zi', '/audio/zi.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 58),
+    ('hiragana-zu', 'ず', 'zu', '/audio/zu.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 59),
+    ('hiragana-ze', 'ぜ', 'ze', '/audio/ze.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 60),
+    ('hiragana-zo', 'ぞ', 'zo', '/audio/zo.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 61),
+
+    ('hiragana-da', 'だ', 'da', '/audio/da.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 62),
+    ('hiragana-di', 'ぢ', 'di', '/audio/di.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 63),
+    ('hiragana-du', 'づ', 'du', '/audio/du.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 64),
+    ('hiragana-de', 'で', 'de', '/audio/de.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 65),
+    ('hiragana-do', 'ど', 'do', '/audio/do.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 66),
+
+    ('hiragana-ba', 'ば', 'ba', '/audio/ba.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 67),
+    ('hiragana-bi', 'び', 'bi', '/audio/bi.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 68),
+    ('hiragana-bu', 'ぶ', 'bu', '/audio/bu.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 69),
+    ('hiragana-be', 'べ', 'be', '/audio/be.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 70),
+    ('hiragana-bo', 'ぼ', 'bo', '/audio/bo.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 71),
+
+    ('hiragana-pa', 'ぱ', 'pa', '/audio/pa.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 72),
+    ('hiragana-pi', 'ぴ', 'pi', '/audio/pi.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 73),
+    ('hiragana-pu', 'ぷ', 'pu', '/audio/pu.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 74),
+    ('hiragana-pe', 'ぺ', 'pe', '/audio/pe.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 75),
+    ('hiragana-po', 'ぽ', 'po', '/audio/po.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 76);

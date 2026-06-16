@@ -1,6 +1,7 @@
 package com.yvonne.onakawash.service;
 
 
+import com.yvonne.onakawash.legacy.Kana;
 import com.yvonne.onakawash.model.KanaItem;
 import com.yvonne.onakawash.model.KanaSection;
 import org.springframework.stereotype.Service;
@@ -427,14 +428,24 @@ private List<KanaItem>getKatakanaCombinationItems(){
                 kanaItemRepository.findByTypeOrderBySectionOrderAscDisplayOrderAsc("HIRAGANA");
 
         List<KanaItemEntity> basicEntities = new ArrayList<>();
+        List<KanaItemEntity> dakutenEntities = new ArrayList<>();
+
 
         for (KanaItemEntity entity : entities) {
             if ("BASIC".equals(entity.getSection())) {
                 basicEntities.add(entity);
             }
+            if ("DAKUTEN".equals(entity.getSection())){
+                dakutenEntities.add(entity);
+            }
         }
 
         List<KanaItem> basicItems = convertEntitiesToFixedSlots(basicEntities, 55);
+
+        List<KanaItem> dakutenItems = new ArrayList<>();
+        for (KanaItemEntity entity:dakutenEntities){
+            dakutenItems.add(convertEntityToKanaItem(entity));
+        }
 //又准备一个更大的空篮子。
 //这个大篮子装 KanaSection。
         List<KanaSection> sections = new ArrayList<>();
@@ -443,6 +454,11 @@ private List<KanaItem>getKatakanaCombinationItems(){
                 "Basic Hiragana",
                 "Basic hiragana sounds",
                 basicItems
+        ));
+        sections.add(new KanaSection(
+                "Dakuten / Han-dakuten",
+                "Voiced and semi-voiced hiragana sounds",
+                dakutenItems
         ));
 
         return sections;
