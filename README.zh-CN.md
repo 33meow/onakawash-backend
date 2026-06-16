@@ -121,6 +121,118 @@ onakawash-backend
 * 未来切换到正式数据库
 * 准备项目部署
 
+## 本地开发方式
+
+当前后端项目主要使用 **VS Code** 进行编辑，使用 **PowerShell** 运行 Spring Boot。
+
+由于 IntelliJ IDEA 在当前环境中出现闪退问题，暂时不使用 IDEA 运行或编辑后端项目。
+
+当前推荐工作流：
+
+```text
+VS Code      编辑 Java / SQL / README 文件
+PowerShell   运行 Spring Boot 后端
+PowerShell   运行 Next.js 前端
+PowerShell   执行 Git 命令
+```
+
+## 后端运行方式
+
+打开 PowerShell，进入后端仓库：
+
+```powershell
+cd D:\Code\onakawash-backend
+```
+
+运行 Spring Boot：
+
+```powershell
+.\mvnw.cmd spring-boot:run
+```
+
+后端启动成功后，控制台会出现类似信息：
+
+```text
+Tomcat started on port 8080
+Started OnakawashBackendApplication
+```
+
+后端接口示例：
+
+```text
+http://localhost:8080/hiragana
+```
+
+注意：运行 Spring Boot 的 PowerShell 窗口会被后端进程占用。
+如果需要执行 Git 命令或其他命令，应重新打开一个 PowerShell 窗口。
+
+停止后端：
+
+```text
+Ctrl + C
+```
+
+如果出现确认提示，输入：
+
+```text
+Y
+```
+
+然后回车。
+
+## 前端运行方式
+
+打开新的 PowerShell，进入前端仓库：
+
+```powershell
+cd D:\Code\onakawash
+```
+
+运行前端：
+
+```powershell
+npm run dev
+```
+
+前端页面地址：
+
+```text
+http://localhost:3000
+```
+
+## Git 操作
+
+建议单独打开一个 PowerShell 执行 Git 命令。
+
+进入后端仓库：
+
+```powershell
+cd D:\Code\onakawash-backend
+```
+
+查看当前修改：
+
+```powershell
+git status
+```
+
+提交修改示例：
+
+```powershell
+git add .
+git commit -m "feat: add hiragana database sections"
+git push
+```
+
+## 开发注意事项
+
+* 当前不要使用 IDEA 右上角运行按钮启动 Spring Boot。
+* 如果修改了 `data.sql` 或 Java 代码，需要重启后端才能看到变化。
+* H2 数据库当前用于本地开发，数据会在 Spring Boot 启动时通过 `data.sql` 初始化。
+* 如果出现 `Port 8080 already in use`，说明后端已经在运行，需要先停止旧的后端进程。
+* 如果出现 `hs_err_pid*.log` 文件，它是 Java / JVM 崩溃日志，不属于项目代码，不应该提交到 Git。
+
+
 ## 作者
 
 马艺源 （Yvonne Buttercup）

@@ -119,6 +119,118 @@ During local development:
 * Switch to a production database in the future
 * Prepare the project for deployment
 
+## Local Development
+
+The backend project is currently edited with **VS Code** and run with **PowerShell**.
+
+IntelliJ IDEA is not used at the moment because it has been unstable in the current environment.
+
+Current recommended workflow:
+
+```text
+VS Code       Edit Java / SQL / README files
+PowerShell    Run the Spring Boot backend
+PowerShell    Run the Next.js frontend
+PowerShell    Run Git commands
+```
+
+## Run the Backend
+
+Open PowerShell and enter the backend repository:
+
+```powershell
+cd D:\Code\onakawash-backend
+```
+
+Run Spring Boot:
+
+```powershell
+.\mvnw.cmd spring-boot:run
+```
+
+When the backend starts successfully, the console should show messages similar to:
+
+```text
+Tomcat started on port 8080
+Started OnakawashBackendApplication
+```
+
+Example backend API:
+
+```text
+http://localhost:8080/hiragana
+```
+
+Note: the PowerShell window running Spring Boot will be occupied by the backend process.
+Open another PowerShell window if Git commands or other commands need to be executed.
+
+To stop the backend:
+
+```text
+Ctrl + C
+```
+
+If a confirmation message appears, type:
+
+```text
+Y
+```
+
+Then press Enter.
+
+## Run the Frontend
+
+Open another PowerShell window and enter the frontend repository:
+
+```powershell
+cd D:\Code\onakawash
+```
+
+Run the frontend:
+
+```powershell
+npm run dev
+```
+
+Frontend page:
+
+```text
+http://localhost:3000
+```
+
+## Git Commands
+
+It is recommended to use a separate PowerShell window for Git commands.
+
+Enter the backend repository:
+
+```powershell
+cd D:\Code\onakawash-backend
+```
+
+Check current changes:
+
+```powershell
+git status
+```
+
+Example commit:
+
+```powershell
+git add .
+git commit -m "feat: add hiragana database sections"
+git push
+```
+
+## Development Notes
+
+* Do not use the IDEA run button to start Spring Boot for now.
+* If `data.sql` or Java code is changed, restart the backend to apply the changes.
+* H2 is currently used as the local development database. Data is initialized from `data.sql` when Spring Boot starts.
+* If `Port 8080 already in use` appears, the backend is already running. Stop the old backend process first.
+* If an `hs_err_pid*.log` file appears, it is a Java / JVM crash log and should not be committed to Git.
+
+
 ## Author
 
 Ma Yiyuan (Yvonne Buttercup)
