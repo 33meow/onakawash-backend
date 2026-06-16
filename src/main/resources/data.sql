@@ -90,3 +90,51 @@ VALUES
     ('hiragana-pu', 'ぷ', 'pu', '/audio/pu.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 74),
     ('hiragana-pe', 'ぺ', 'pe', '/audio/pe.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 75),
     ('hiragana-po', 'ぽ', 'po', '/audio/po.mp3', NULL, 'HIRAGANA', 'DAKUTEN', 2, 76);
+
+-- Hiragana Combination
+INSERT INTO kana_items
+(id,kana,romaji,audio_src,image_src,type,section,section_order,display_order)
+VALUES
+    ('hiragana-kya', 'きゃ', 'kya', '/audio/kya.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 77),
+    ('hiragana-kyu', 'きゅ', 'kyu', '/audio/kyu.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 78),
+    ('hiragana-kyo', 'きょ', 'kyo', '/audio/kyo.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 79),
+
+    ('hiragana-gya', 'ぎゃ', 'gya', '/audio/gya.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 80),
+    ('hiragana-gyu', 'ぎゅ', 'gyu', '/audio/gyu.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 81),
+    ('hiragana-gyo', 'ぎょ', 'gyo', '/audio/gyo.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 82),
+
+    ('hiragana-sya', 'しゃ', 'sya', '/audio/sya.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 83),
+    ('hiragana-syu', 'しゅ', 'syu', '/audio/syu.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 84),
+    ('hiragana-syo', 'しょ', 'syo', '/audio/syo.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 85),
+
+    ('hiragana-zya', 'じゃ', 'zya', '/audio/zya.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 86),
+    ('hiragana-zyu', 'じゅ', 'zyu', '/audio/zyu.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 87),
+    ('hiragana-zyo', 'じょ', 'zyo', '/audio/zyo.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 88),
+
+    ('hiragana-tya', 'ちゃ', 'tya', '/audio/tya.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 89),
+    ('hiragana-tyu', 'ちゅ', 'tyu', '/audio/tyu.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 90),
+    ('hiragana-tyo', 'ちょ', 'tyo', '/audio/tyo.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 91),
+
+    ('hiragana-nya', 'にゃ', 'nya', '/audio/nya.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 92),
+    ('hiragana-nyu', 'にゅ', 'nyu', '/audio/nyu.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 93),
+    ('hiragana-nyo', 'にょ', 'nyo', '/audio/nyo.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 94),
+
+    ('hiragana-hya', 'ひゃ', 'hya', '/audio/hya.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 95),
+    ('hiragana-hyu', 'ひゅ', 'hyu', '/audio/hyu.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 96),
+    ('hiragana-hyo', 'ひょ', 'hyo', '/audio/hyo.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 97),
+
+    ('hiragana-bya', 'びゃ', 'bya', '/audio/bya.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 98),
+    ('hiragana-byu', 'びゅ', 'byu', '/audio/byu.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 99),
+    ('hiragana-byo', 'びょ', 'byo', '/audio/byo.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 100),
+
+    ('hiragana-pya', 'ぴゃ', 'pya', '/audio/pya.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 101),
+    ('hiragana-pyu', 'ぴゅ', 'pyu', '/audio/pyu.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 102),
+    ('hiragana-pyo', 'ぴょ', 'pyo', '/audio/pyo.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 103),
+
+    ('hiragana-mya', 'みゃ', 'mya', '/audio/mya.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 104),
+    ('hiragana-myu', 'みゅ', 'myu', '/audio/myu.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 105),
+    ('hiragana-myo', 'みょ', 'myo', '/audio/myo.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 106),
+
+    ('hiragana-rya', 'りゃ', 'rya', '/audio/rya.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 107),
+    ('hiragana-ryu', 'りゅ', 'ryu', '/audio/ryu.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 108),
+    ('hiragana-ryo', 'りょ', 'ryo', '/audio/ryo.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 109);
