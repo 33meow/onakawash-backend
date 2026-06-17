@@ -16,6 +16,8 @@ import java.util.List;
 @Service
 public class KanaService {
 
+    private static final int BASIC_KANA_GRID_SLOTS = 55;
+
     // Repository 是专门和数据库说话的对象。
     // Service 通过它从 H2 的 kana_items 表里读取数据。
     private final KanaItemRepository kanaItemRepository;
@@ -42,14 +44,10 @@ public class KanaService {
 
 
     }
-    private List<KanaItem> convertEntitiesToFixedSlots(
-           //这个方法需要别人传进来一个 KanaItemEntity 列表，这个列表在方法里面叫 entities
-            List<KanaItemEntity> entities,
-            int totalSlots
-    ){
+   private List<KanaItem> convertEntitiesToFixedSlots(List<KanaItemEntity> entities) {
         List<KanaItem> items = new ArrayList<>();
 
-        for (int i=0;i<totalSlots;i++){
+        for (int i=0;i<BASIC_KANA_GRID_SLOTS;i++){
             //制造空位。现在数据库不存空位，所以 Service 要自己重新补空位。
             items.add(null);
         }
@@ -63,7 +61,7 @@ public class KanaService {
             //displayOrder 是你在这一行新定义的变量。
             Integer displayOrder = entity.getDisplayOrder();
             //做安全检查。
-            if (displayOrder !=null&&displayOrder>=1&&displayOrder<=totalSlots){
+            if (displayOrder !=null&&displayOrder>=1&&displayOrder<=BASIC_KANA_GRID_SLOTS){
                 //Java 的 List 位置是从 0 开始
                 int index = displayOrder -1;
                 //把这个位置上的 null 替换成真正的 KanaItem。
@@ -72,13 +70,21 @@ public class KanaService {
         }
         return items;
     }
-    // 这个方法返回前端需要的 Section 格式。
-// 数据来源已经变成 H2 数据库。
-    public List<KanaSection> getHiraganaSectionsFromDatabase() {
+
+    private List<KanaSection> getKanaSectionsFromDatabase(
+            String type,
+            String basicTitle,
+            String basicDescription,
+            String dakutenTitle,
+            String dakutenDescription,
+            String combinationTitle,
+            String combinationDescription
+    ) {
+        // 这里放原来两个方法里重复的查询、分组、转换、组装逻辑
         // 1. 从数据库查出所有 HIRAGANA 数据
         // Repository 已经按照 section_order 和 display_order 排好顺序了
         List<KanaItemEntity> entities =
-                kanaItemRepository.findByTypeOrderBySectionOrderAscDisplayOrderAsc("HIRAGANA");
+                kanaItemRepository.findByTypeOrderBySectionOrderAscDisplayOrderAsc(type);
         // 2. 准备三个小篮子，分别装三个 section 的数据
         List<KanaItemEntity> basicEntities = new ArrayList<>();
         List<KanaItemEntity> dakutenEntities = new ArrayList<>();
@@ -97,7 +103,7 @@ public class KanaService {
             }
         }
         // 4. Basic 需要补空位，所以用 fixed slots
-        List<KanaItem> basicItems = convertEntitiesToFixedSlots(basicEntities, 55);
+        List<KanaItem> basicItems = convertEntitiesToFixedSlots(basicEntities);
         // 5. Dakuten 不需要补空位，普通转换就行
         List<KanaItem> dakutenItems = new ArrayList<>();
         for (KanaItemEntity entity:dakutenEntities){
@@ -116,80 +122,44 @@ public class KanaService {
         List<KanaSection> sections = new ArrayList<>();
 
         sections.add(new KanaSection(
-                "Basic Hiragana",
-                "Basic hiragana sounds",
+              basicTitle,
+                basicDescription,
                 basicItems
         ));
         sections.add(new KanaSection(
-                "Dakuten / Han-dakuten",
-                "Voiced and semi-voiced hiragana sounds",
+               dakutenTitle,
+                dakutenDescription,
                 dakutenItems
         ));
         sections.add(new KanaSection(
-                "Combination Hiragana",
-                "Combined hiragana sounds",
+             combinationTitle,
+                combinationDescription,
                 combinationItems
         ));
         return sections;
     }
+    // 这个方法返回前端需要的 Section 格式。
+// 数据来源已经变成 H2 数据库。
+    public List<KanaSection> getHiraganaSectionsFromDatabase() {
+return getKanaSectionsFromDatabase(
+        "HIRAGANA",
+        "Basic Hiragana",
+        "Basic hiragana sounds",
+        "Dakuten / Han-dakuten Hiragana",
+        "Voiced and semi-voiced hiragana sounds",
+        "Combination Hiragana",
+        "Combined hiragana sounds");
+    }
 
     public List<KanaSection> getKatakanaSectionsFromDatabase() {
-        // 1. 从数据库查出所有 HIRAGANA 数据
-        // Repository 已经按照 section_order 和 display_order 排好顺序了
-        List<KanaItemEntity> entities =
-                kanaItemRepository.findByTypeOrderBySectionOrderAscDisplayOrderAsc("KATAKANA");
-        // 2. 准备三个小篮子，分别装三个 section 的数据
-        List<KanaItemEntity> basicEntities = new ArrayList<>();
-        List<KanaItemEntity> dakutenEntities = new ArrayList<>();
-        List<KanaItemEntity> combinationEntities = new ArrayList<>();
-
-        // 3. 把数据库查出来的一长串 Hiragana 数据，按 section 分开
-        for (KanaItemEntity entity : entities) {
-            if ("BASIC".equals(entity.getSection())) {
-                basicEntities.add(entity);
-            }
-            if ("DAKUTEN".equals(entity.getSection())){
-                dakutenEntities.add(entity);
-            }
-            if ("COMBINATION".equals(entity.getSection())) {
-                combinationEntities.add(entity);
-            }
-        }
-        // 4. Basic 需要补空位，所以用 fixed slots
-        List<KanaItem> basicItems = convertEntitiesToFixedSlots(basicEntities, 55);
-        // 5. Dakuten 不需要补空位，普通转换就行
-        List<KanaItem> dakutenItems = new ArrayList<>();
-        for (KanaItemEntity entity:dakutenEntities){
-            dakutenItems.add(convertEntityToKanaItem(entity));
-        }
-        // 6. Combination 也不需要补空位，普通转换
-        // 它的显示顺序来自 data.sql 里的 display_order
-        List<KanaItem> combinationItems = new ArrayList<>();
-        for (KanaItemEntity entity : combinationEntities) {
-            combinationItems.add(convertEntityToKanaItem(entity));
-        }
-
-//又准备一个更大的空篮子。
-//这个大篮子装 KanaSection。
-// 7. 准备最终返回给前端的大篮子
-        List<KanaSection> sections = new ArrayList<>();
-
-        sections.add(new KanaSection(
-                "Basic Katakana",
-                "Basic katakana sounds",
-                basicItems
-        ));
-        sections.add(new KanaSection(
-                "Dakuten / Han-dakuten",
-                "Voiced and semi-voiced katakana sounds",
-                dakutenItems
-        ));
-        sections.add(new KanaSection(
-                "Combination Katakana",
-                "Combined katakana sounds",
-                combinationItems
-        ));
-        return sections;
+return getKanaSectionsFromDatabase(
+        "KATAKANA",
+        "Basic Katakana",
+        "Basic katakana sounds",
+        "Dakuten / Han-dakuten Katakana",
+        "Voiced and semi-voiced katakana sounds",
+        "Combination Katakana",
+        "Combined katakana sounds");
     }
 
 }
