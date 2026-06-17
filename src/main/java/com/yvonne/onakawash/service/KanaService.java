@@ -1,7 +1,7 @@
 package com.yvonne.onakawash.service;
 
 
-import com.yvonne.onakawash.legacy.Kana;
+
 import com.yvonne.onakawash.model.KanaItem;
 import com.yvonne.onakawash.model.KanaSection;
 import org.springframework.stereotype.Service;

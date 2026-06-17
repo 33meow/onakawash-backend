@@ -1,13 +1,13 @@
 package com.yvonne.onakawash.controller;
 
-import com.yvonne.onakawash.legacy.Kana;
+
 import com.yvonne.onakawash.model.KanaSection;
 import com.yvonne.onakawash.service.KanaService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.ArrayList;
+
 import java.util.List;
-import com.yvonne.onakawash.entity.KanaItemEntity;
+
 //CORS /kɔːrz/ 的感觉就是：
 // 浏览器保安看到前端是 localhost:3000，
 // 后端是 localhost:8080，
@@ -27,23 +27,6 @@ public class KanaController {
     public String home(){
         return "IM BUTTERCUP";
     }
-    @GetMapping("/kana")
-    public Kana getKna(){
-
-        return new Kana("a","あ","a","/audio/a.mp3");
-    }
-    //kana API
-    @GetMapping("/kana-list")
-    public List<Kana> getKanaList(){
-        List<Kana> kanaList = new ArrayList<>();
-        //浏览器需要的是网站路径，也就是从 public 后面开始写。
-        kanaList.add(new Kana("a", "あ", "a", "/audio/a.mp3"));
-        kanaList.add(new Kana("i", "い", "i", "/audio/i.mp3"));
-        kanaList.add(new Kana("u", "う", "u", "/audio/u.mp3"));
-
-         return kanaList;
-    }
-
 
 
     //hiragana API
