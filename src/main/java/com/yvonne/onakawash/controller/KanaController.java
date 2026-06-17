@@ -46,11 +46,6 @@ public class KanaController {
 
 
 
-    @GetMapping("/hiragana/db")
-    public List<KanaSection> getHiraganaSectionsFromDatabase() {
-        return kanaService.getHiraganaSectionsFromDatabase();
-    }
-
     //hiragana API
 
     //当前端访问 /hiragana 时
@@ -63,8 +58,8 @@ public class KanaController {
 
       }
       @GetMapping("/katakana")
-    public List<KanaSection>getKatakana(){
-        return kanaService.getKatakanaSections();
+     public List<KanaSection>getKatakana(){
+        return kanaService.getKatakanaSectionsFromDatabase();
       }
 
 }

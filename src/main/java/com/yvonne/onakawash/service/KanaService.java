@@ -482,6 +482,64 @@ private List<KanaItem>getKatakanaCombinationItems(){
         return sections;
     }
 
+    public List<KanaSection> getKatakanaSectionsFromDatabase() {
+        // 1. 从数据库查出所有 HIRAGANA 数据
+        // Repository 已经按照 section_order 和 display_order 排好顺序了
+        List<KanaItemEntity> entities =
+                kanaItemRepository.findByTypeOrderBySectionOrderAscDisplayOrderAsc("KATAKANA");
+        // 2. 准备三个小篮子，分别装三个 section 的数据
+        List<KanaItemEntity> basicEntities = new ArrayList<>();
+        List<KanaItemEntity> dakutenEntities = new ArrayList<>();
+        List<KanaItemEntity> combinationEntities = new ArrayList<>();
+
+        // 3. 把数据库查出来的一长串 Hiragana 数据，按 section 分开
+        for (KanaItemEntity entity : entities) {
+            if ("BASIC".equals(entity.getSection())) {
+                basicEntities.add(entity);
+            }
+            if ("DAKUTEN".equals(entity.getSection())){
+                dakutenEntities.add(entity);
+            }
+            if ("COMBINATION".equals(entity.getSection())) {
+                combinationEntities.add(entity);
+            }
+        }
+        // 4. Basic 需要补空位，所以用 fixed slots
+        List<KanaItem> basicItems = convertEntitiesToFixedSlots(basicEntities, 55);
+        // 5. Dakuten 不需要补空位，普通转换就行
+        List<KanaItem> dakutenItems = new ArrayList<>();
+        for (KanaItemEntity entity:dakutenEntities){
+            dakutenItems.add(convertEntityToKanaItem(entity));
+        }
+        // 6. Combination 也不需要补空位，普通转换
+        // 它的显示顺序来自 data.sql 里的 display_order
+        List<KanaItem> combinationItems = new ArrayList<>();
+        for (KanaItemEntity entity : combinationEntities) {
+            combinationItems.add(convertEntityToKanaItem(entity));
+        }
+
+//又准备一个更大的空篮子。
+//这个大篮子装 KanaSection。
+// 7. 准备最终返回给前端的大篮子
+        List<KanaSection> sections = new ArrayList<>();
+
+        sections.add(new KanaSection(
+                "Basic Katakana",
+                "Basic katakana sounds",
+                basicItems
+        ));
+        sections.add(new KanaSection(
+                "Dakuten / Han-dakuten",
+                "Voiced and semi-voiced katakana sounds",
+                dakutenItems
+        ));
+        sections.add(new KanaSection(
+                "Combination Katakana",
+                "Combined katakana sounds",
+                combinationItems
+        ));
+        return sections;
+    }
 
 }
 

@@ -1,3 +1,4 @@
+--Hiragana Basic
 INSERT INTO kana_items
 (id, kana, romaji, audio_src, image_src, type, section, section_order, display_order)
 VALUES
@@ -138,3 +139,145 @@ VALUES
     ('hiragana-rya', 'りゃ', 'rya', '/audio/rya.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 107),
     ('hiragana-ryu', 'りゅ', 'ryu', '/audio/ryu.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 108),
     ('hiragana-ryo', 'りょ', 'ryo', '/audio/ryo.mp3', NULL, 'HIRAGANA', 'COMBINATION', 3, 109);
+
+--Katakana Basic
+INSERT INTO kana_items
+(id, kana, romaji, audio_src, image_src, type, section, section_order, display_order)
+VALUES
+    ('katakana-a', 'ア', 'a', '/audio/a.mp3', NULL, 'KATAKANA', 'BASIC', 1, 1),
+    ('katakana-i', 'イ', 'i', '/audio/i.mp3', NULL, 'KATAKANA', 'BASIC', 1, 2),
+    ('katakana-u', 'ウ', 'u', '/audio/u.mp3', NULL, 'KATAKANA', 'BASIC', 1, 3),
+    ('katakana-e', 'エ', 'e', '/audio/e.mp3', NULL, 'KATAKANA', 'BASIC', 1, 4),
+    ('katakana-o', 'オ', 'o', '/audio/o.mp3', NULL, 'KATAKANA', 'BASIC', 1, 5),
+
+    ('katakana-ka', 'カ', 'ka', '/audio/ka.mp3', NULL, 'KATAKANA', 'BASIC', 1, 6),
+    ('katakana-ki', 'キ', 'ki', '/audio/ki.mp3', NULL, 'KATAKANA', 'BASIC', 1, 7),
+    ('katakana-ku', 'ク', 'ku', '/audio/ku.mp3', NULL, 'KATAKANA', 'BASIC', 1, 8),
+    ('katakana-ke', 'ケ', 'ke', '/audio/ke.mp3', NULL, 'KATAKANA', 'BASIC', 1, 9),
+    ('katakana-ko', 'コ', 'ko', '/audio/ko.mp3', NULL, 'KATAKANA', 'BASIC', 1, 10),
+
+    ('katakana-sa', 'サ', 'sa', '/audio/sa.mp3', NULL, 'KATAKANA', 'BASIC', 1, 11),
+    ('katakana-si', 'シ', 'si', '/audio/si.mp3', NULL, 'KATAKANA', 'BASIC', 1, 12),
+    ('katakana-su', 'ス', 'su', '/audio/su.mp3', NULL, 'KATAKANA', 'BASIC', 1, 13),
+    ('katakana-se', 'セ', 'se', '/audio/se.mp3', NULL, 'KATAKANA', 'BASIC', 1, 14),
+    ('katakana-so', 'ソ', 'so', '/audio/so.mp3', NULL, 'KATAKANA', 'BASIC', 1, 15),
+
+    ('katakana-ta', 'タ', 'ta', '/audio/ta.mp3', NULL, 'KATAKANA', 'BASIC', 1, 16),
+    ('katakana-ti', 'チ', 'ti', '/audio/ti.mp3', NULL, 'KATAKANA', 'BASIC', 1, 17),
+    ('katakana-tu', 'ツ', 'tu', '/audio/tu.mp3', NULL, 'KATAKANA', 'BASIC', 1, 18),
+    ('katakana-te', 'テ', 'te', '/audio/te.mp3', NULL, 'KATAKANA', 'BASIC', 1, 19),
+    ('katakana-to', 'ト', 'to', '/audio/to.mp3', NULL, 'KATAKANA', 'BASIC', 1, 20),
+
+    ('katakana-na', 'ナ', 'na', '/audio/na.mp3', NULL, 'KATAKANA', 'BASIC', 1, 21),
+    ('katakana-ni', 'ニ', 'ni', '/audio/ni.mp3', NULL, 'KATAKANA', 'BASIC', 1, 22),
+    ('katakana-nu', 'ヌ', 'nu', '/audio/nu.mp3', NULL, 'KATAKANA', 'BASIC', 1, 23),
+    ('katakana-ne', 'ネ', 'ne', '/audio/ne.mp3', NULL, 'KATAKANA', 'BASIC', 1, 24),
+    ('katakana-no', 'ノ', 'no', '/audio/no.mp3', NULL, 'KATAKANA', 'BASIC', 1, 25),
+
+    ('katakana-ha', 'ハ', 'ha', '/audio/ha.mp3', NULL, 'KATAKANA', 'BASIC', 1, 26),
+    ('katakana-hi', 'ヒ', 'hi', '/audio/hi.mp3', NULL, 'KATAKANA', 'BASIC', 1, 27),
+    ('katakana-hu', 'フ', 'hu', '/audio/hu.mp3', NULL, 'KATAKANA', 'BASIC', 1, 28),
+    ('katakana-he', 'ヘ', 'he', '/audio/he.mp3', NULL, 'KATAKANA', 'BASIC', 1, 29),
+    ('katakana-ho', 'ホ', 'ho', '/audio/ho.mp3', NULL, 'KATAKANA', 'BASIC', 1, 30),
+
+    ('katakana-ma', 'マ', 'ma', '/audio/ma.mp3', NULL, 'KATAKANA', 'BASIC', 1, 31),
+    ('katakana-mi', 'ミ', 'mi', '/audio/mi.mp3', NULL, 'KATAKANA', 'BASIC', 1, 32),
+    ('katakana-mu', 'ム', 'mu', '/audio/mu.mp3', NULL, 'KATAKANA', 'BASIC', 1, 33),
+    ('katakana-me', 'メ', 'me', '/audio/me.mp3', NULL, 'KATAKANA', 'BASIC', 1, 34),
+    ('katakana-mo', 'モ', 'mo', '/audio/mo.mp3', NULL, 'KATAKANA', 'BASIC', 1, 35),
+
+    ('katakana-ya', 'ヤ', 'ya', '/audio/ya.mp3', NULL, 'KATAKANA', 'BASIC', 1, 36),
+    ('katakana-yu', 'ユ', 'yu', '/audio/yu.mp3', NULL, 'KATAKANA', 'BASIC', 1, 38),
+    ('katakana-yo', 'ヨ', 'yo', '/audio/yo.mp3', NULL, 'KATAKANA', 'BASIC', 1, 40),
+
+    ('katakana-ra', 'ラ', 'ra', '/audio/ra.mp3', NULL, 'KATAKANA', 'BASIC', 1, 41),
+    ('katakana-ri', 'リ', 'ri', '/audio/ri.mp3', NULL, 'KATAKANA', 'BASIC', 1, 42),
+    ('katakana-ru', 'ル', 'ru', '/audio/ru.mp3', NULL, 'KATAKANA', 'BASIC', 1, 43),
+    ('katakana-re', 'レ', 're', '/audio/re.mp3', NULL, 'KATAKANA', 'BASIC', 1, 44),
+    ('katakana-ro', 'ロ', 'ro', '/audio/ro.mp3', NULL, 'KATAKANA', 'BASIC', 1, 45),
+
+    ('katakana-wa', 'ワ', 'wa', '/audio/wa.mp3', NULL, 'KATAKANA', 'BASIC', 1, 46),
+    ('katakana-wo', 'ヲ', 'wo', '/audio/wo.mp3', NULL, 'KATAKANA', 'BASIC', 1, 50),
+    ('katakana-n', 'ン', 'n', '/audio/n.mp3', NULL, 'KATAKANA', 'BASIC', 1, 51);
+
+--Katakana Dakuten / Han-dakuten
+INSERT INTO kana_items
+(id, kana, romaji, audio_src, image_src, type, section, section_order, display_order)
+VALUES
+    ('katakana-ga', 'ガ', 'ga', '/audio/ga.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 52),
+    ('katakana-gi', 'ギ', 'gi', '/audio/gi.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 53),
+    ('katakana-gu', 'グ', 'gu', '/audio/gu.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 54),
+    ('katakana-ge', 'ゲ', 'ge', '/audio/ge.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 55),
+    ('katakana-go', 'ゴ', 'go', '/audio/go.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 56),
+
+    ('katakana-za', 'ザ', 'za', '/audio/za.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 57),
+    ('katakana-zi', 'ジ', 'zi', '/audio/zi.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 58),
+    ('katakana-zu', 'ズ', 'zu', '/audio/zu.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 59),
+    ('katakana-ze', 'ゼ', 'ze', '/audio/ze.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 60),
+    ('katakana-zo', 'ゾ', 'zo', '/audio/zo.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 61),
+
+    ('katakana-da', 'ダ', 'da', '/audio/da.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 62),
+    ('katakana-di', 'ヂ', 'di', '/audio/di.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 63),
+    ('katakana-du', 'ヅ', 'du', '/audio/du.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 64),
+    ('katakana-de', 'デ', 'de', '/audio/de.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 65),
+    ('katakana-do', 'ド', 'do', '/audio/do.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 66),
+
+    ('katakana-ba', 'バ', 'ba', '/audio/ba.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 67),
+    ('katakana-bi', 'ビ', 'bi', '/audio/bi.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 68),
+    ('katakana-bu', 'ブ', 'bu', '/audio/bu.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 69),
+    ('katakana-be', 'ベ', 'be', '/audio/be.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 70),
+    ('katakana-bo', 'ボ', 'bo', '/audio/bo.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 71),
+
+    ('katakana-pa', 'パ', 'pa', '/audio/pa.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 72),
+    ('katakana-pi', 'ピ', 'pi', '/audio/pi.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 73),
+    ('katakana-pu', 'プ', 'pu', '/audio/pu.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 74),
+    ('katakana-pe', 'ペ', 'pe', '/audio/pe.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 75),
+    ('katakana-po', 'ポ', 'po', '/audio/po.mp3', NULL, 'KATAKANA', 'DAKUTEN', 2, 76);
+
+--Katakana Combination
+INSERT INTO kana_items
+(id, kana, romaji, audio_src, image_src, type, section, section_order, display_order)
+VALUES
+    ('katakana-kya', 'キャ', 'kya', '/audio/kya.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 77),
+    ('katakana-kyu', 'キュ', 'kyu', '/audio/kyu.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 78),
+    ('katakana-kyo', 'キョ', 'kyo', '/audio/kyo.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 79),
+
+    ('katakana-gya', 'ギャ', 'gya', '/audio/gya.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 80),
+    ('katakana-gyu', 'ギュ', 'gyu', '/audio/gyu.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 81),
+    ('katakana-gyo', 'ギョ', 'gyo', '/audio/gyo.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 82),
+
+    ('katakana-sya', 'シャ', 'sya', '/audio/sya.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 83),
+    ('katakana-syu', 'シュ', 'syu', '/audio/syu.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 84),
+    ('katakana-syo', 'ショ', 'syo', '/audio/syo.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 85),
+
+    ('katakana-zya', 'ジャ', 'zya', '/audio/zya.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 86),
+    ('katakana-zyu', 'ジュ', 'zyu', '/audio/zyu.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 87),
+    ('katakana-zyo', 'ジョ', 'zyo', '/audio/zyo.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 88),
+
+    ('katakana-tya', 'チャ', 'tya', '/audio/tya.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 89),
+    ('katakana-tyu', 'チュ', 'tyu', '/audio/tyu.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 90),
+    ('katakana-tyo', 'チョ', 'tyo', '/audio/tyo.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 91),
+
+    ('katakana-nya', 'ニャ', 'nya', '/audio/nya.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 92),
+    ('katakana-nyu', 'ニュ', 'nyu', '/audio/nyu.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 93),
+    ('katakana-nyo', 'ニョ', 'nyo', '/audio/nyo.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 94),
+
+    ('katakana-hya', 'ヒャ', 'hya', '/audio/hya.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 95),
+    ('katakana-hyu', 'ヒュ', 'hyu', '/audio/hyu.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 96),
+    ('katakana-hyo', 'ヒョ', 'hyo', '/audio/hyo.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 97),
+
+    ('katakana-bya', 'ビャ', 'bya', '/audio/bya.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 98),
+    ('katakana-byu', 'ビュ', 'byu', '/audio/byu.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 99),
+    ('katakana-byo', 'ビョ', 'byo', '/audio/byo.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 100),
+
+    ('katakana-pya', 'ピャ', 'pya', '/audio/pya.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 101),
+    ('katakana-pyu', 'ピュ', 'pyu', '/audio/pyu.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 102),
+    ('katakana-pyo', 'ピョ', 'pyo', '/audio/pyo.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 103),
+
+    ('katakana-mya', 'ミャ', 'mya', '/audio/mya.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 104),
+    ('katakana-myu', 'ミュ', 'myu', '/audio/myu.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 105),
+    ('katakana-myo', 'ミョ', 'myo', '/audio/myo.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 106),
+
+    ('katakana-rya', 'リャ', 'rya', '/audio/rya.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 107),
+    ('katakana-ryu', 'リュ', 'ryu', '/audio/ryu.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 108),
+    ('katakana-ryo', 'リョ', 'ryo', '/audio/ryo.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 109);
