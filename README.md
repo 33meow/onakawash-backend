@@ -17,7 +17,7 @@ The project is still under development.
 * Controller / Service / Repository layered structure
 * H2 database for local development
 * `data.sql` used as seed data
-* Hiragana data stored in the database
+* Hiragana and Katakana data stored in the database
 * Frontend connection support through CORS
 
 ## Current Data Flow
@@ -29,6 +29,15 @@ Frontend → Controller → Service → Repository → Database
 The frontend sends requests to the backend.
 
 The backend reads kana data from the database and returns it to the frontend as JSON.
+
+Current kana endpoints:
+
+```text
+GET /hiragana  -> reads HIRAGANA records from kana_items
+GET /katakana  -> reads KATAKANA records from kana_items
+```
+
+Both endpoints return section-based JSON data for the frontend pages.
 
 ## Tech Stack
 
@@ -54,6 +63,8 @@ src/main/resources/data.sql
 The kana data in `data.sql` is the current main data source.
 
 Older hardcoded kana data in the frontend, controller, or service layer should be treated as legacy data and should not be used as the main data source anymore.
+
+Kana content, audio paths, image paths, section groups, and display order should be updated in `data.sql`.
 
 In the future, the project may switch to a production database such as:
 
@@ -159,6 +170,7 @@ Example backend API:
 
 ```text
 http://localhost:8080/hiragana
+http://localhost:8080/katakana
 ```
 
 Note: the PowerShell window running Spring Boot will be occupied by the backend process.

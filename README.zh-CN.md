@@ -19,7 +19,7 @@ onakawash 是一个面向日语初学者的五十音学习网站。
 * Controller / Service / Repository 分层结构
 * 使用 H2 数据库进行本地开发
 * 使用 `data.sql` 存放初始化数据
-* 平假名数据已开始存入数据库
+* 平假名和片假名数据都存放在数据库中
 * 支持前端通过 CORS 访问后端接口
 
 ## 当前数据流
@@ -31,6 +31,15 @@ Frontend → Controller → Service → Repository → Database
 前端向后端发送请求。
 
 后端从数据库读取假名数据，然后以 JSON 格式返回给前端。
+
+当前假名接口：
+
+```text
+GET /hiragana  -> 从 kana_items 读取 HIRAGANA 记录
+GET /katakana  -> 从 kana_items 读取 KATAKANA 记录
+```
+
+这两个接口都会返回按分类整理好的 JSON 数据，供前端页面渲染。
 
 ## 技术栈
 
@@ -56,6 +65,8 @@ src/main/resources/data.sql
 目前，`data.sql` 是假名数据的主要来源。
 
 前端旧数据文件、Controller 中曾经写死的数据、Service 中曾经手写的数据，都属于历史版本数据，不再作为当前主数据来源。
+
+假名内容、音频路径、图片路径、分类和显示顺序应在 `data.sql` 中维护。
 
 未来项目如果上线，可能会切换到正式数据库，例如：
 
@@ -161,6 +172,7 @@ Started OnakawashBackendApplication
 
 ```text
 http://localhost:8080/hiragana
+http://localhost:8080/katakana
 ```
 
 注意：运行 Spring Boot 的 PowerShell 窗口会被后端进程占用。
