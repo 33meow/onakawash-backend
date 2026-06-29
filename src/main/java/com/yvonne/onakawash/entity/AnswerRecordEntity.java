@@ -23,7 +23,7 @@ public class AnswerRecordEntity {
     private String practiceType;
     private String practiceMode;
 
-    private Long kanaItemId;
+    private String kanaItemId;
     private String kana;
     private String correctRomaji;
     private String selectedRomaji;
@@ -81,11 +81,11 @@ public class AnswerRecordEntity {
         this.practiceMode = practiceMode;
     }
 
-    public Long getKanaItemId() {
+    public String getKanaItemId() {
         return kanaItemId;
     }
 
-    public void setKanaItemId(Long kanaItemId) {
+    public void setKanaItemId(String kanaItemId) {
         this.kanaItemId = kanaItemId;
     }
 
