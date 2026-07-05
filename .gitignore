@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Local agent planning files, not part of the Spring Boot app###
+.scratch/
+docs/agents/
+AGENTS.md
