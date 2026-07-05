@@ -24,6 +24,18 @@ public class KanaMasteryService {
     private static final double WEAK_SCORE_THRESHOLD = 0.6;
 
 
+    // 答题时间超过这个毫秒数，就认为这次答题偏慢。
+    // 3000 ms = 3 秒。慢不是错误，但说明这个 kana 可能还不够熟。
+    private static final int SLOW_RESPONSE_THRESHOLD_MS = 3000;
+
+    // weakScore 里，错误率占主要权重。
+    // V0.6 规则要求 incorrect answers weighted more heavily.
+    private static final double INCORRECT_WEIGHT = 0.8;
+
+    // weakScore 里，慢速率占辅助权重。
+    // 慢答会增加 weakScore，但影响比答错小。
+    private static final double SLOW_WEIGHT = 0.2;
+
     //第一类：Service 需要哪些工具
 
     //final 不能被改
@@ -84,14 +96,61 @@ public class KanaMasteryService {
                             recentRecordsPage
                     );
 
+            //第一步：数证据数量
             int evidenceCount = recentRecords.size();
+
+            //第二步：数错误次数和慢速次数（先从 0 开始。）
+            int incorrectCount = 0;
+            int slowCount = 0;
+
+            for (AnswerRecordEntity record : recentRecords) {
+                if (Boolean.FALSE.equals(record.getIsCorrect())) {
+                    incorrectCount++;
+                }
+
+                if (
+                        //第三步：判断慢
+                        //有答题时间，并且超过 3000 ms（3000ms是上面定义的）
+                        record.getResponseTimeMs() != null &&
+                                record.getResponseTimeMs() > SLOW_RESPONSE_THRESHOLD_MS
+                ) {
+                    slowCount++;
+                }
+            }
+
+            double recentIncorrectRate = 0.0;
+            double recentSlowRate = 0.0;
+
+            if (evidenceCount > 0) {
+                //第四步：算比例
+                //* 1.0 是为了让 Java 算小数。
+                recentIncorrectRate = incorrectCount * 1.0 / evidenceCount;
+                recentSlowRate = slowCount * 1.0 / evidenceCount;
+            }
+
+            //第五步：算 weakScore
+            //weakScore = 错误率 * 0.8 + 慢速率 * 0.2
+            double weakScore =
+                    recentIncorrectRate * INCORRECT_WEIGHT +
+                            recentSlowRate * SLOW_WEIGHT;
+
+            String status;
+
+            //第六步：判断 status
+            if (evidenceCount < MINIMUM_EVIDENCE_COUNT) {
+                status = "insufficient_evidence";
+            } else if (weakScore >= WEAK_SCORE_THRESHOLD) {
+                status = "weak";
+            } else {
+                status = "normal";
+            }
 
             results.add(new KanaMasteryResult(
                     kanaItem.getId(),
                     kanaItem.getKana(),
                     evidenceCount,
-                    0.0,
-                    "insufficient_evidence"
+                    weakScore,
+                    status
             ));
         }
 
