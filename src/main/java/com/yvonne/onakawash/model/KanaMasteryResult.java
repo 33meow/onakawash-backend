@@ -3,6 +3,8 @@
 
 package com.yvonne.onakawash.model;
 
+
+
 public class KanaMasteryResult {
     //字段本身被保护住了
     private String kanaItemId;
@@ -11,18 +13,24 @@ public class KanaMasteryResult {
     private double weakScore;
     private String status;
 
+    private long availableTangoItemCount;
+
     public KanaMasteryResult(
             String kanaItemId,
             String kana,
             int evidenceCount,
             double weakScore,
-            String status
+            String status,
+
+            long availableTangoItemCount
     ) {
         this.kanaItemId = kanaItemId;
         this.kana = kana;
         this.evidenceCount = evidenceCount;
         this.weakScore = weakScore;
         this.status = status;
+
+        this.availableTangoItemCount = availableTangoItemCount;
     }
 //只有getter所以外面只能读不能改
     public String getKanaItemId() {
@@ -43,5 +51,9 @@ public class KanaMasteryResult {
 
     public String getStatus() {
         return status;
+    }
+
+    public long getAvailableTangoItemCount() {
+        return availableTangoItemCount;
     }
 }

@@ -8,6 +8,7 @@ import com.yvonne.onakawash.repository.KanaItemRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import com.yvonne.onakawash.repository.TangoItemRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,8 @@ public class KanaMasteryService {
     //分析结果里需要 kanaItemId 和 kana，所以要拿假名基础资料。
     private final KanaItemRepository kanaItemRepository;
 
+    private final TangoItemRepository tangoItemRepository;
+
     //第二类：constructor injection
 
     //Spring Boot 创建 KanaMasteryService 的时候，
@@ -54,7 +57,8 @@ public class KanaMasteryService {
 
     public KanaMasteryService(
             AnswerRecordRepository answerRecordRepository,
-            KanaItemRepository kanaItemRepository
+            KanaItemRepository kanaItemRepository,
+            TangoItemRepository tangoItemRepository
     ) {
 
         // this.answerRecordRepository 是这个 Service 自己保存的工具。
@@ -63,6 +67,7 @@ public class KanaMasteryService {
         //右边：是 constructor 参数。
         this.answerRecordRepository = answerRecordRepository;
         this.kanaItemRepository = kanaItemRepository;
+        this.tangoItemRepository = tangoItemRepository;
     }
 
 
@@ -137,6 +142,7 @@ public class KanaMasteryService {
             String status;
 
             //第六步：判断 status
+
             if (evidenceCount < MINIMUM_EVIDENCE_COUNT) {
                 status = "insufficient_evidence";
             } else if (weakScore >= WEAK_SCORE_THRESHOLD) {
@@ -144,16 +150,24 @@ public class KanaMasteryService {
             } else {
                 status = "normal";
             }
+            long availableTangoItemCount = 0;
+
+            if ("weak".equals(status)) {
+                availableTangoItemCount = tangoItemRepository.countByCoveredKanaItemId(kanaItem.getId());
+            }
 
             results.add(new KanaMasteryResult(
                     kanaItem.getId(),
                     kanaItem.getKana(),
                     evidenceCount,
                     weakScore,
-                    status
+                    status,
+                    availableTangoItemCount
             ));
+
         }
 
         return results;
     }
+
 }
