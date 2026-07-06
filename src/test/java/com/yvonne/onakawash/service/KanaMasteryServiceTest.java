@@ -51,6 +51,7 @@ public class KanaMasteryServiceTest {
         //如果实际结果不是这样，测试就失败。
         assertEquals(3, hiraganaAResult.getEvidenceCount());
         assertEquals("weak", hiraganaAResult.getStatus());
+        assertEquals(1, hiraganaAResult.getAvailableTangoItemCount());
     }
 
     private void saveAnswerRecord(
