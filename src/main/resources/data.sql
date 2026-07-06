@@ -281,3 +281,87 @@ VALUES
     ('katakana-rya', 'リャ', 'rya', '/audio/rya.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 107),
     ('katakana-ryu', 'リュ', 'ryu', '/audio/ryu.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 108),
     ('katakana-ryo', 'リョ', 'ryo', '/audio/ryo.mp3', NULL, 'KATAKANA', 'COMBINATION', 3, 109);
+
+--Tango items for V0.6 Adaptive Review availability analysis
+INSERT INTO tango_items
+(tango_item_id, display_text, script_type, meaning_zh, correct_romaji, content_type)
+VALUES
+    ('tango-ari', 'あり', 'HIRAGANA', '蚂蚁', 'ari', 'VOCABULARY_ROMAJI_CHOICE'),
+    ('tango-inu', 'いぬ', 'HIRAGANA', '狗', 'inu', 'VOCABULARY_ROMAJI_CHOICE'),
+    ('tango-ie', 'いえ', 'HIRAGANA', '房子、家', 'ie', 'VOCABULARY_ROMAJI_CHOICE'),
+    ('tango-sushi', 'すし', 'HIRAGANA', '寿司', 'susi', 'VOCABULARY_ROMAJI_CHOICE'),
+    ('tango-sora', 'そら', 'HIRAGANA', '天空', 'sora', 'VOCABULARY_ROMAJI_CHOICE'),
+    ('tango-camera', 'カメラ', 'KATAKANA', '相机', 'kamera', 'VOCABULARY_ROMAJI_CHOICE'),
+    ('tango-tomato', 'トマト', 'KATAKANA', '番茄', 'tomato', 'VOCABULARY_ROMAJI_CHOICE'),
+    ('tango-pizza', 'ピザ', 'KATAKANA', '披萨', 'piza', 'VOCABULARY_ROMAJI_CHOICE');
+
+INSERT INTO tango_item_options
+(tango_item_id, option_value)
+VALUES
+    ('tango-ari', 'ari'),
+    ('tango-ari', 'asa'),
+    ('tango-ari', 'inu'),
+    ('tango-ari', 'ao'),
+
+    ('tango-inu', 'inu'),
+    ('tango-inu', 'ie'),
+    ('tango-inu', 'ari'),
+    ('tango-inu', 'susi'),
+
+    ('tango-ie', 'ie'),
+    ('tango-ie', 'inu'),
+    ('tango-ie', 'ari'),
+    ('tango-ie', 'sora'),
+
+    ('tango-sushi', 'susi'),
+    ('tango-sushi', 'sora'),
+    ('tango-sushi', 'inu'),
+    ('tango-sushi', 'ari'),
+
+    ('tango-sora', 'sora'),
+    ('tango-sora', 'susi'),
+    ('tango-sora', 'ari'),
+    ('tango-sora', 'ie'),
+
+    ('tango-camera', 'kamera'),
+    ('tango-camera', 'tomato'),
+    ('tango-camera', 'piza'),
+    ('tango-camera', 'remon'),
+
+    ('tango-tomato', 'tomato'),
+    ('tango-tomato', 'kamera'),
+    ('tango-tomato', 'piza'),
+    ('tango-tomato', 'banana'),
+
+    ('tango-pizza', 'piza'),
+    ('tango-pizza', 'tomato'),
+    ('tango-pizza', 'kamera'),
+    ('tango-pizza', 'banana');
+
+INSERT INTO tango_item_covered_kana
+(tango_item_id, kana_item_id)
+VALUES
+    ('tango-ari', 'hiragana-a'),
+    ('tango-ari', 'hiragana-ri'),
+
+    ('tango-inu', 'hiragana-i'),
+    ('tango-inu', 'hiragana-nu'),
+
+    ('tango-ie', 'hiragana-i'),
+    ('tango-ie', 'hiragana-e'),
+
+    ('tango-sushi', 'hiragana-su'),
+    ('tango-sushi', 'hiragana-si'),
+
+    ('tango-sora', 'hiragana-so'),
+    ('tango-sora', 'hiragana-ra'),
+
+    ('tango-camera', 'katakana-ka'),
+    ('tango-camera', 'katakana-me'),
+    ('tango-camera', 'katakana-ra'),
+
+    ('tango-tomato', 'katakana-to'),
+    ('tango-tomato', 'katakana-ma'),
+
+    ('tango-pizza', 'katakana-pi'),
+    ('tango-pizza', 'katakana-za');
