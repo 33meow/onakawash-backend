@@ -29,8 +29,14 @@ public class PracticeSessionEntity {
     //这一轮练习的唯一标志，未来可以用uuid
     private String sessionKey;
 
+    //练习内容类型，比如 HIRAGANA / KATAKANA
     private String practiceType;
+    //答题方式，比如 ROMAJI_CHOICE
     private String practiceMode;
+    // 这一轮 session 的大类型。
+    // KANA_PRACTICE = 普通假名练习。
+    // ADAPTIVE_REVIEW = 根据 weak kana 自动生成的复习。
+    private String sessionType;
 
     private Integer score;
     private Integer totalQuestions;
@@ -143,5 +149,13 @@ public class PracticeSessionEntity {
 
     public void setCreatedAt(LocalDateTime createdAt){
         this.createdAt = createdAt;
+    }
+
+    public String getSessionType(){
+        return sessionType;
+    }
+
+    public void setSessionType(String sessionType){
+        this.sessionType = sessionType;
     }
 }
