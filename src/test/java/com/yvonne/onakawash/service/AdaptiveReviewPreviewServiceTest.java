@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.BeforeEach;
 
+import com.yvonne.onakawash.repository.PracticeSessionRepository;
+
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,9 +23,13 @@ public class AdaptiveReviewPreviewServiceTest {
     @Autowired
     private AdaptiveReviewPreviewService adaptiveReviewPreviewService;
 
+    @Autowired
+    private PracticeSessionRepository practiceSessionRepository;
+
     @BeforeEach
-    void cleanAnswerRecords() {
+    void cleanRecords() {
         answerRecordRepository.deleteAll();
+        practiceSessionRepository.deleteAll();
     }
     @Test
     void returnsReadyPreviewWhenWeakKanaHasAvailableTangoItem() {
@@ -87,6 +93,21 @@ public class AdaptiveReviewPreviewServiceTest {
         assertEquals(1, result.getTheoreticalQuestionCount());
         assertEquals(2, result.getWeakKanaWithAvailableContent().size());
         assertEquals(0, result.getWeakKanaWithoutAvailableContent().size());
+    }
+
+    @Test
+    void previewDoesNotCreatePracticeSessionOrAnswerRecord() {
+        saveAnswerRecord("hiragana-a", false, 2500, LocalDateTime.of(2026, 7, 7, 18, 30));
+        saveAnswerRecord("hiragana-a", false, 3100, LocalDateTime.of(2026, 7, 7, 18, 31));
+        saveAnswerRecord("hiragana-a", false, 1800, LocalDateTime.of(2026, 7, 7, 18, 32));
+
+        long answerRecordCountBeforePreview = answerRecordRepository.count();
+        long practiceSessionCountBeforePreview = practiceSessionRepository.count();
+
+        adaptiveReviewPreviewService.getPreview();
+
+        assertEquals(answerRecordCountBeforePreview, answerRecordRepository.count());
+        assertEquals(practiceSessionCountBeforePreview, practiceSessionRepository.count());
     }
 
     private void saveAnswerRecord(
