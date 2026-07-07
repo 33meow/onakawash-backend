@@ -5,7 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface TangoItemRepository extends JpaRepository<TangoItemEntity, String> {
     @Query("select count(t) from TangoItemEntity t join t.coveredKanaItemIds coveredKanaItemId where coveredKanaItemId = :kanaItemId")
     long countByCoveredKanaItemId(@Param("kanaItemId") String kanaItemId);
+
+    @Query("select distinct t from TangoItemEntity t join t.coveredKanaItemIds coveredKanaItemId where coveredKanaItemId in :kanaItemIds")
+    List<TangoItemEntity> findDistinctByCoveredKanaItemIds(@Param("kanaItemIds") List<String> kanaItemIds);
 }
