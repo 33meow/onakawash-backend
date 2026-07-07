@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
 
 //启动一个测试用的 Spring Boot 环境
 @SpringBootTest
@@ -26,6 +27,10 @@ public class KanaMasteryServiceTest {
     @Autowired
     private KanaMasteryService kanaMasteryService;
 
+    @BeforeEach
+    void cleanAnswerRecords() {
+        answerRecordRepository.deleteAll();
+    }
     //测试方法名的含义：当最近证据多数错误时，返回 weak
     @Test
     void returnsWeakWhenRecentEvidenceIsMostlyIncorrect() {
