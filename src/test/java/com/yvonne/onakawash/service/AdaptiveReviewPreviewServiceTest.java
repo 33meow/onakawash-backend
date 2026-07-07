@@ -69,6 +69,26 @@ public class AdaptiveReviewPreviewServiceTest {
         assertEquals(1, result.getWeakKanaWithoutAvailableContent().size());
     }
 
+    @Test
+    void deduplicatesAvailableTangoItemsWhenOneItemCoversMultipleWeakKana() {
+        saveAnswerRecord("hiragana-a", false, 2500, LocalDateTime.of(2026, 7, 7, 18, 20));
+        saveAnswerRecord("hiragana-a", false, 3100, LocalDateTime.of(2026, 7, 7, 18, 21));
+        saveAnswerRecord("hiragana-a", false, 1800, LocalDateTime.of(2026, 7, 7, 18, 22));
+
+        saveAnswerRecord("hiragana-ri", false, 2500, LocalDateTime.of(2026, 7, 7, 18, 23));
+        saveAnswerRecord("hiragana-ri", false, 3100, LocalDateTime.of(2026, 7, 7, 18, 24));
+        saveAnswerRecord("hiragana-ri", false, 1800, LocalDateTime.of(2026, 7, 7, 18, 25));
+
+        AdaptiveReviewPreviewResult result = adaptiveReviewPreviewService.getPreview();
+
+        assertEquals("ready", result.getPreviewStatus());
+        assertEquals(2, result.getWeakKanaCount());
+        assertEquals(1, result.getDistinctAvailableTangoItemCount());
+        assertEquals(1, result.getTheoreticalQuestionCount());
+        assertEquals(2, result.getWeakKanaWithAvailableContent().size());
+        assertEquals(0, result.getWeakKanaWithoutAvailableContent().size());
+    }
+
     private void saveAnswerRecord(
             String kanaItemId,
             boolean isCorrect,
