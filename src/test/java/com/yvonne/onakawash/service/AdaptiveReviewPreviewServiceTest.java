@@ -53,6 +53,22 @@ public class AdaptiveReviewPreviewServiceTest {
         assertEquals(0, result.getWeakKanaWithoutAvailableContent().size());
     }
 
+    @Test
+    void returnsNoAvailableTangoContentWhenWeakKanaHasNoTangoItem() {
+        saveAnswerRecord("hiragana-o", false, 2500, LocalDateTime.of(2026, 7, 7, 18, 10));
+        saveAnswerRecord("hiragana-o", false, 3100, LocalDateTime.of(2026, 7, 7, 18, 11));
+        saveAnswerRecord("hiragana-o", false, 1800, LocalDateTime.of(2026, 7, 7, 18, 12));
+
+        AdaptiveReviewPreviewResult result = adaptiveReviewPreviewService.getPreview();
+
+        assertEquals("no_available_tango_content", result.getPreviewStatus());
+        assertEquals(1, result.getWeakKanaCount());
+        assertEquals(0, result.getDistinctAvailableTangoItemCount());
+        assertEquals(0, result.getTheoreticalQuestionCount());
+        assertEquals(0, result.getWeakKanaWithAvailableContent().size());
+        assertEquals(1, result.getWeakKanaWithoutAvailableContent().size());
+    }
+
     private void saveAnswerRecord(
             String kanaItemId,
             boolean isCorrect,
