@@ -41,6 +41,18 @@ public class AdaptiveReviewPreviewServiceTest {
         assertEquals(0, result.getWeakKanaWithoutAvailableContent().size());
     }
 
+    @Test
+    void returnsNoWeakKanaWhenThereAreNoWeakKana() {
+        AdaptiveReviewPreviewResult result = adaptiveReviewPreviewService.getPreview();
+
+        assertEquals("no_weak_kana", result.getPreviewStatus());
+        assertEquals(0, result.getWeakKanaCount());
+        assertEquals(0, result.getDistinctAvailableTangoItemCount());
+        assertEquals(0, result.getTheoreticalQuestionCount());
+        assertEquals(0, result.getWeakKanaWithAvailableContent().size());
+        assertEquals(0, result.getWeakKanaWithoutAvailableContent().size());
+    }
+
     private void saveAnswerRecord(
             String kanaItemId,
             boolean isCorrect,
