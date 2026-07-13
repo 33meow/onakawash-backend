@@ -6,6 +6,11 @@ import com.yvonne.onakawash.repository.PracticeSessionQuestionRepository;
 import com.yvonne.onakawash.repository.PracticeSessionRepository;
 import com.yvonne.onakawash.repository.TangoItemRepository;
 import org.springframework.stereotype.Service;
+import com.yvonne.onakawash.entity.TangoItemEntity;
+import com.yvonne.onakawash.model.AdaptiveReviewPreviewKanaResult;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AdaptiveReviewSessionService {
@@ -67,11 +72,34 @@ public AdaptiveReviewSessionResult createAdaptiveReviewSession(){
         );
     }
 
+    //只放“真的有 TangoItem 可以练”的 weak kana id
+    List<String> weakKanaItemIdsWithAvailableContent = new ArrayList<>();
+
+    for (AdaptiveReviewPreviewKanaResult weakKana :
+            preview.getWeakKanaWithAvailableContent()) {
+        weakKanaItemIdsWithAvailableContent.add(weakKana.getKanaItemId());
+    }
+
+    List<TangoItemEntity> availableTangoItems =
+            tangoItemRepository.findDistinctByCoveredKanaItemIds(
+                    weakKanaItemIdsWithAvailableContent
+            );
+
+    List<TangoItemEntity> selectedTangoItems = new ArrayList<>();
+
+    for (TangoItemEntity tangoItem : availableTangoItems) {
+        if (selectedTangoItems.size() >= MAX_QUESTION_COUNT) {
+            break;
+        }
+
+        selectedTangoItems.add(tangoItem);
+    }
+
     return new AdaptiveReviewSessionResult(
             "draft",
             null,
             null,
-            0,
+            selectedTangoItems.size(),
             java.util.List.of(),
             java.util.List.of(),
             java.util.List.of(),
