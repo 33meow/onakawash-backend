@@ -8,9 +8,11 @@ import com.yvonne.onakawash.repository.TangoItemRepository;
 import org.springframework.stereotype.Service;
 import com.yvonne.onakawash.entity.TangoItemEntity;
 import com.yvonne.onakawash.model.AdaptiveReviewPreviewKanaResult;
+import com.yvonne.onakawash.entity.PracticeSessionEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AdaptiveReviewSessionService {
@@ -95,10 +97,28 @@ public AdaptiveReviewSessionResult createAdaptiveReviewSession(){
         selectedTangoItems.add(tangoItem);
     }
 
+    //创建一个随机唯一字符串。
+    //它用来标记“这一轮 session”。
+    String sessionKey = UUID.randomUUID().toString();
+
+    //创建一条准备保存到 practice_sessions 表的新记录。
+    PracticeSessionEntity practiceSession = new PracticeSessionEntity();
+    //临时用户 id。因为现在还没有登录系统，所以先用 1L。
+    practiceSession.setUserId(1L);
+    //把这一轮 session 的唯一标识放进去。
+    practiceSession.setSessionKey(sessionKey);
+    practiceSession.setSessionType(ADAPTIVE_REVIEW_SESSION_TYPE);
+    practiceSession.setPracticeType("ADAPTIVE_REVIEW");
+    practiceSession.setPracticeMode("ROMAJI_CHOICE");
+    practiceSession.setTotalQuestions(selectedTangoItems.size());
+
+    PracticeSessionEntity savedPracticeSession =
+            practiceSessionRepository.save(practiceSession);
+
     return new AdaptiveReviewSessionResult(
-            "draft",
-            null,
-            null,
+            CREATED_STATUS,
+            savedPracticeSession.getId(),
+            sessionKey,
             selectedTangoItems.size(),
             java.util.List.of(),
             java.util.List.of(),
