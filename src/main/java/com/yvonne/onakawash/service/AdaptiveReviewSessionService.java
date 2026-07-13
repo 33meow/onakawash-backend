@@ -145,9 +145,9 @@ public AdaptiveReviewSessionResult createAdaptiveReviewSession(){
             sessionKey,
             selectedTangoItems.size(),
             selectedQuestions,
+            preview.getWeakKanaWithAvailableContent(),
             java.util.List.of(),
-            java.util.List.of(),
-            java.util.List.of()
+            preview.getWeakKanaWithoutAvailableContent()
     );
 }
 
