@@ -25,6 +25,7 @@ public class AdaptiveReviewPreviewController {
     @GetMapping("/adaptive-review/preview")
     //这个 API 最后返回的 JSON 形状。
     public AdaptiveReviewPreviewResult getAdaptiveReviewPreview() {
+
         return adaptiveReviewPreviewService.getPreview();
     }
 }

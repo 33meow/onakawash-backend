@@ -1,5 +1,7 @@
 package com.yvonne.onakawash.service;
 
+import com.yvonne.onakawash.model.AdaptiveReviewPreviewResult;
+import com.yvonne.onakawash.model.AdaptiveReviewSessionResult;
 import com.yvonne.onakawash.repository.PracticeSessionQuestionRepository;
 import com.yvonne.onakawash.repository.PracticeSessionRepository;
 import com.yvonne.onakawash.repository.TangoItemRepository;
@@ -47,4 +49,34 @@ public class AdaptiveReviewSessionService {
         this.practiceSessionRepository = practiceSessionRepository;
         this.practiceSessionQuestionRepository = practiceSessionQuestionRepository;
     }
+
+public AdaptiveReviewSessionResult createAdaptiveReviewSession(){
+    AdaptiveReviewPreviewResult preview=
+            adaptiveReviewPreviewService.getPreview();
+
+    if (NO_AVAILABLE_TANGO_CONTENT_STATUS.equals(preview.getPreviewStatus())) {
+        return new AdaptiveReviewSessionResult(
+                NO_AVAILABLE_TANGO_CONTENT_STATUS,
+                null,
+                null,
+                0,
+                java.util.List.of(),
+                java.util.List.of(),
+                java.util.List.of(),
+                preview.getWeakKanaWithoutAvailableContent()
+        );
+    }
+
+    return new AdaptiveReviewSessionResult(
+            "draft",
+            null,
+            null,
+            0,
+            java.util.List.of(),
+            java.util.List.of(),
+            java.util.List.of(),
+            java.util.List.of()
+    );
+}
+
 }
