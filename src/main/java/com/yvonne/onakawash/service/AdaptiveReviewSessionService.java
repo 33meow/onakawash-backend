@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.yvonne.onakawash.entity.TangoItemEntity;
 import com.yvonne.onakawash.model.AdaptiveReviewPreviewKanaResult;
 import com.yvonne.onakawash.entity.PracticeSessionEntity;
+import com.yvonne.onakawash.entity.PracticeSessionQuestionEntity;
+import com.yvonne.onakawash.model.AdaptiveReviewSessionQuestionResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,12 +117,34 @@ public AdaptiveReviewSessionResult createAdaptiveReviewSession(){
     PracticeSessionEntity savedPracticeSession =
             practiceSessionRepository.save(practiceSession);
 
+    List<AdaptiveReviewSessionQuestionResult> selectedQuestions = new ArrayList<>();
+
+    int questionIndex = 1;
+
+    for (TangoItemEntity tangoItem : selectedTangoItems) {
+        PracticeSessionQuestionEntity question =
+                new PracticeSessionQuestionEntity();
+
+        question.setSessionKey(sessionKey);
+        question.setTangoItemId(tangoItem.getTangoItemId());
+        question.setQuestionIndex(questionIndex);
+
+        practiceSessionQuestionRepository.save(question);
+
+        selectedQuestions.add(new AdaptiveReviewSessionQuestionResult(
+                questionIndex,
+                tangoItem.getTangoItemId()
+        ));
+
+        questionIndex++;
+    }
+
     return new AdaptiveReviewSessionResult(
             CREATED_STATUS,
             savedPracticeSession.getId(),
             sessionKey,
             selectedTangoItems.size(),
-            java.util.List.of(),
+            selectedQuestions,
             java.util.List.of(),
             java.util.List.of(),
             java.util.List.of()
