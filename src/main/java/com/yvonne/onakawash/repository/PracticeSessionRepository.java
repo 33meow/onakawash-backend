@@ -1,9 +1,14 @@
 package com.yvonne.onakawash.repository;
-//repository是去和数据库说话的人，这里spring data JPA帮我做掉了大量重复工作
 
 import com.yvonne.onakawash.entity.PracticeSessionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-//PracticeSessionEntity 的主键id类型是Long
-public interface PracticeSessionRepository extends JpaRepository<PracticeSessionEntity,Long>{
+import java.util.Optional;
+
+public interface PracticeSessionRepository
+        extends JpaRepository<PracticeSessionEntity, Long> {
+
+    //给已有 Repository 增加查询能力，原来的保存功能仍由 JpaRepository 提供。
+    // 根据前端提交的 sessionKey，查找对应的一轮练习。
+    Optional<PracticeSessionEntity> findBySessionKey(String sessionKey);
 }
