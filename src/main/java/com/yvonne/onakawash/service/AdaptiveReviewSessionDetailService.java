@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import com.yvonne.onakawash.model.AdaptiveReviewSessionDetailResult.CoverageKana;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -146,10 +147,24 @@ public class AdaptiveReviewSessionDetailService {
             expectedIndex++;
         }
 
+        // 读取本轮创建时保存的结果，不重新查询当前掌握情况。
+        List<CoverageKana> coverage = session.isCoverageCaptured()
+                ? session.getKanaCoverage()
+                .stream()
+                .map(item -> new CoverageKana(
+                        item.getKanaItemId(),
+                        item.getKana(),
+                        item.getStatus()
+                ))
+                .toList()
+                : List.of();
+
         return new AdaptiveReviewSessionDetailResult(
                 sessionKey,
                 questions.size(),
-                List.copyOf(questions)
+                List.copyOf(questions),
+                session.isCoverageCaptured(),
+                coverage
         );
     }
 
