@@ -1,154 +1,165 @@
 package com.yvonne.onakawash.service;
 
+import com.yvonne.onakawash.entity.PracticeSessionEntity;
+import com.yvonne.onakawash.entity.PracticeSessionQuestionEntity;
+import com.yvonne.onakawash.entity.SessionKanaCoverage;
+import com.yvonne.onakawash.entity.TangoItemEntity;
+import com.yvonne.onakawash.model.AdaptiveReviewPreviewKanaResult;
 import com.yvonne.onakawash.model.AdaptiveReviewPreviewResult;
+import com.yvonne.onakawash.model.AdaptiveReviewSessionQuestionResult;
 import com.yvonne.onakawash.model.AdaptiveReviewSessionResult;
 import com.yvonne.onakawash.repository.PracticeSessionQuestionRepository;
 import com.yvonne.onakawash.repository.PracticeSessionRepository;
 import com.yvonne.onakawash.repository.TangoItemRepository;
 import org.springframework.stereotype.Service;
-import com.yvonne.onakawash.entity.TangoItemEntity;
-import com.yvonne.onakawash.model.AdaptiveReviewPreviewKanaResult;
-import com.yvonne.onakawash.entity.PracticeSessionEntity;
-import com.yvonne.onakawash.entity.PracticeSessionQuestionEntity;
-import com.yvonne.onakawash.model.AdaptiveReviewSessionQuestionResult;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
 public class AdaptiveReviewSessionService {
 
-    // 一轮 Adaptive Review 最多出 10 题。
-    // 这对应 BE-4 的完成标准：Select at most 10 distinct TangoItem questions.
     private static final int MAX_QUESTION_COUNT = 10;
 
-    // 新创建的 PracticeSession 会用这个 sessionType。
-    // 它对应 BE-4 的完成标准：区分 KANA_PRACTICE 和 ADAPTIVE_REVIEW。
-    private static final String ADAPTIVE_REVIEW_SESSION_TYPE = "ADAPTIVE_REVIEW";
-
-    // 如果没有可用 TangoItem，就返回这个状态，并且不创建 PracticeSession。
-    // 这对应 BE-4 的完成标准：Return no_available_tango_content without creating a PracticeSession.
-    private static final String NO_AVAILABLE_TANGO_CONTENT_STATUS = "no_available_tango_content";
-
-    // 如果成功创建 session，就返回这个状态。
-    private static final String CREATED_STATUS = "created";
-
-    // 复用 BE-3 的 preview 逻辑。
-    // 创建 session 前要重新验证 weak kana 和可用 TangoItem。
-    private final AdaptiveReviewPreviewService adaptiveReviewPreviewService;
-
-    // 用来从 tango_items 表里取出真正要出题的 TangoItem。
+    private final AdaptiveReviewPreviewService previewService;
     private final TangoItemRepository tangoItemRepository;
-
-    // 用来保存 PracticeSession 主记录。
-    private final PracticeSessionRepository practiceSessionRepository;
-
-    // 用来保存这一轮 session 的固定题目顺序。
-    private final PracticeSessionQuestionRepository practiceSessionQuestionRepository;
+    private final PracticeSessionRepository sessionRepository;
+    private final PracticeSessionQuestionRepository questionRepository;
 
     public AdaptiveReviewSessionService(
-            AdaptiveReviewPreviewService adaptiveReviewPreviewService,
+            AdaptiveReviewPreviewService previewService,
             TangoItemRepository tangoItemRepository,
-            PracticeSessionRepository practiceSessionRepository,
-            PracticeSessionQuestionRepository practiceSessionQuestionRepository
+            PracticeSessionRepository sessionRepository,
+            PracticeSessionQuestionRepository questionRepository
     ) {
-        this.adaptiveReviewPreviewService = adaptiveReviewPreviewService;
+        this.previewService = previewService;
         this.tangoItemRepository = tangoItemRepository;
-        this.practiceSessionRepository = practiceSessionRepository;
-        this.practiceSessionQuestionRepository = practiceSessionQuestionRepository;
+        this.sessionRepository = sessionRepository;
+        this.questionRepository = questionRepository;
     }
 
-public AdaptiveReviewSessionResult createAdaptiveReviewSession(){
-    AdaptiveReviewPreviewResult preview=
-            adaptiveReviewPreviewService.getPreview();
+    // 练习、题目和覆盖记录一起保存；其中一步失败就一起回滚。
+    @Transactional
+    public AdaptiveReviewSessionResult createAdaptiveReviewSession() {
+        var preview = previewService.getPreview();
 
-    if (NO_AVAILABLE_TANGO_CONTENT_STATUS.equals(preview.getPreviewStatus())) {
+        List<String> weakKanaIds = preview
+                .getWeakKanaWithAvailableContent()
+                .stream()
+                .map(AdaptiveReviewPreviewKanaResult::getKanaItemId)
+                .toList();
+
+        // 没有可练的薄弱假名，不创建空练习。
+        if (weakKanaIds.isEmpty()) {
+            return unavailable(preview);
+        }
+
+        List<TangoItemEntity> selectedItems = tangoItemRepository
+                .findDistinctByCoveredKanaItemIds(weakKanaIds)
+                .stream()
+                .sorted(Comparator.comparing(TangoItemEntity::getTangoItemId))
+                .limit(MAX_QUESTION_COUNT)
+                .toList();
+
+        if (selectedItems.isEmpty()) {
+            return unavailable(preview);
+        }
+
+        // 只统计本轮真正选中的题目包含的假名。
+        Set<String> selectedKanaIds = new HashSet<>();
+
+        for (var item : selectedItems) {
+            selectedKanaIds.addAll(item.getCoveredKanaItemIds());
+        }
+
+        List<AdaptiveReviewPreviewKanaResult> covered = new ArrayList<>();
+        List<AdaptiveReviewPreviewKanaResult> deferred = new ArrayList<>();
+        List<SessionKanaCoverage> snapshot = new ArrayList<>();
+
+        for (var kana : preview.getWeakKanaWithAvailableContent()) {
+            boolean included = selectedKanaIds.contains(kana.getKanaItemId());
+
+            if (included) {
+                covered.add(kana);
+            } else {
+                deferred.add(kana);
+            }
+
+            snapshot.add(new SessionKanaCoverage(
+                    kana.getKanaItemId(),
+                    kana.getKana(),
+                    included ? "covered" : "deferred"
+            ));
+        }
+
+        for (var kana : preview.getWeakKanaWithoutAvailableContent()) {
+            snapshot.add(new SessionKanaCoverage(
+                    kana.getKanaItemId(),
+                    kana.getKana(),
+                    "no_content"
+            ));
+        }
+
+        String sessionKey = UUID.randomUUID().toString();
+
+        var session = new PracticeSessionEntity();
+        session.setUserId(1L);
+        session.setSessionKey(sessionKey);
+        session.setSessionType("ADAPTIVE_REVIEW");
+        session.setPracticeType("ADAPTIVE_REVIEW");
+        session.setPracticeMode("ROMAJI_CHOICE");
+        session.setTotalQuestions(selectedItems.size());
+        session.captureKanaCoverage(snapshot);
+
+        var savedSession = sessionRepository.save(session);
+
+        List<AdaptiveReviewSessionQuestionResult> questions = new ArrayList<>();
+        int index = 1;
+
+        for (var item : selectedItems) {
+            var question = new PracticeSessionQuestionEntity();
+            question.setSessionKey(sessionKey);
+            question.setTangoItemId(item.getTangoItemId());
+            question.setQuestionIndex(index);
+            questionRepository.save(question);
+
+            questions.add(new AdaptiveReviewSessionQuestionResult(
+                    index,
+                    item.getTangoItemId()
+            ));
+
+            index++;
+        }
+
         return new AdaptiveReviewSessionResult(
-                NO_AVAILABLE_TANGO_CONTENT_STATUS,
-                null,
-                null,
-                0,
-                java.util.List.of(),
-                java.util.List.of(),
-                java.util.List.of(),
+                "created",
+                savedSession.getId(),
+                sessionKey,
+                selectedItems.size(),
+                questions,
+                covered,
+                deferred,
                 preview.getWeakKanaWithoutAvailableContent()
         );
     }
 
-    //只放“真的有 TangoItem 可以练”的 weak kana id
-    List<String> weakKanaItemIdsWithAvailableContent = new ArrayList<>();
-
-    for (AdaptiveReviewPreviewKanaResult weakKana :
-            preview.getWeakKanaWithAvailableContent()) {
-        weakKanaItemIdsWithAvailableContent.add(weakKana.getKanaItemId());
+    private AdaptiveReviewSessionResult unavailable(
+            AdaptiveReviewPreviewResult preview
+    ) {
+        return new AdaptiveReviewSessionResult(
+                "no_available_tango_content",
+                null,
+                null,
+                0,
+                List.of(),
+                List.of(),
+                List.of(),
+                preview.getWeakKanaWithoutAvailableContent()
+        );
     }
-
-    List<TangoItemEntity> availableTangoItems =
-            tangoItemRepository.findDistinctByCoveredKanaItemIds(
-                    weakKanaItemIdsWithAvailableContent
-            );
-
-    List<TangoItemEntity> selectedTangoItems = new ArrayList<>();
-
-    for (TangoItemEntity tangoItem : availableTangoItems) {
-        if (selectedTangoItems.size() >= MAX_QUESTION_COUNT) {
-            break;
-        }
-
-        selectedTangoItems.add(tangoItem);
-    }
-
-    //创建一个随机唯一字符串。
-    //它用来标记“这一轮 session”。
-    String sessionKey = UUID.randomUUID().toString();
-
-    //创建一条准备保存到 practice_sessions 表的新记录。
-    PracticeSessionEntity practiceSession = new PracticeSessionEntity();
-    //临时用户 id。因为现在还没有登录系统，所以先用 1L。
-    practiceSession.setUserId(1L);
-    //把这一轮 session 的唯一标识放进去。
-    practiceSession.setSessionKey(sessionKey);
-    practiceSession.setSessionType(ADAPTIVE_REVIEW_SESSION_TYPE);
-    practiceSession.setPracticeType("ADAPTIVE_REVIEW");
-    practiceSession.setPracticeMode("ROMAJI_CHOICE");
-    practiceSession.setTotalQuestions(selectedTangoItems.size());
-
-    PracticeSessionEntity savedPracticeSession =
-            practiceSessionRepository.save(practiceSession);
-
-    List<AdaptiveReviewSessionQuestionResult> selectedQuestions = new ArrayList<>();
-
-    int questionIndex = 1;
-
-    for (TangoItemEntity tangoItem : selectedTangoItems) {
-        PracticeSessionQuestionEntity question =
-                new PracticeSessionQuestionEntity();
-
-        question.setSessionKey(sessionKey);
-        question.setTangoItemId(tangoItem.getTangoItemId());
-        question.setQuestionIndex(questionIndex);
-
-        practiceSessionQuestionRepository.save(question);
-
-        selectedQuestions.add(new AdaptiveReviewSessionQuestionResult(
-                questionIndex,
-                tangoItem.getTangoItemId()
-        ));
-
-        questionIndex++;
-    }
-
-    return new AdaptiveReviewSessionResult(
-            CREATED_STATUS,
-            savedPracticeSession.getId(),
-            sessionKey,
-            selectedTangoItems.size(),
-            selectedQuestions,
-            preview.getWeakKanaWithAvailableContent(),
-            java.util.List.of(),
-            preview.getWeakKanaWithoutAvailableContent()
-    );
-}
-
 }

@@ -14,7 +14,13 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.JoinColumn;
 
+import java.util.ArrayList;
+import java.util.List;
 @Entity
 //PracticeSessionEntity这个Java类对应数据库里的practice_sessions表
 @Table(name = "practice_sessions")
@@ -47,6 +53,16 @@ public class PracticeSessionEntity {
     private Integer durationSeconds;
 
     private LocalDateTime createdAt;
+
+    // 区分“旧记录没有保存覆盖信息”和“有覆盖信息”。
+    private Boolean coverageCaptured;
+
+    @ElementCollection
+    @CollectionTable(
+            name = "practice_session_kana_coverage",
+            joinColumns = @JoinColumn(name = "practice_session_id")
+    )
+    private List<SessionKanaCoverage> kanaCoverage = new ArrayList<>();
 
     //no-args constructor
     public PracticeSessionEntity(){
@@ -158,4 +174,20 @@ public class PracticeSessionEntity {
     public void setSessionType(String sessionType){
         this.sessionType = sessionType;
     }
+
+    @JsonIgnore
+    public boolean isCoverageCaptured() {
+        return Boolean.TRUE.equals(coverageCaptured);
+    }
+
+    @JsonIgnore
+    public List<SessionKanaCoverage> getKanaCoverage() {
+        return kanaCoverage;
+    }
+
+    public void captureKanaCoverage(List<SessionKanaCoverage> coverage) {
+        this.kanaCoverage = new ArrayList<>(coverage);
+        this.coverageCaptured = true;
+    }
+
 }
